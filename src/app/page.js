@@ -90,12 +90,12 @@ export default function Home() {
                     </p>
                     {/* <p>{`Game Won:${won}`}</p> */}
                 </div>
-                <div className='grid grid-cols-3 gap-2 text-center pr-20 pb-20 pl-20 '>
+                <div className='grid grid-cols-3 gap-2 text-center pr-20 pb-20 pl-20 max-w-lg m-auto'>
                     {[...Array(9)].map((v, index) => {
                         return (
                             <div
                                 key={index}
-                                className={` rounded-lg p-5 text-center text-5xl leading-10 font-bold w-100 h-20 cursor-pointer shadow-md ${
+                                className={` rounded-lg p-5 text-center text-5xl leading-10 font-bold w-20 h-20 cursor-pointer shadow-md ${
                                     wonCombo.includes(index) ? 'bg-green-300' : 'bg-zinc-300'
                                 } `}
                                 onClick={() => {
