@@ -16,6 +16,7 @@ export default function Home() {
     });
     const [won, setWon] = useState(false);
     const [wonCombo, setWonCombo] = useState([]);
+    const [isDraw, setIsDraw] = useState(false);
     const [modalTitle, setModalTitle] = useState('');
 
     const WINNING_COMBO = [
@@ -28,6 +29,12 @@ export default function Home() {
         [0, 4, 8],
         [2, 4, 6],
     ];
+
+    const checkDraw = () => {
+        let check = Object.keys(boardData).every((v) => boardData[v]);
+        setIsDraw(check);
+        if (check) setModalTitle('Match Null!!!');
+    };
 
     const checkWinner = () => {
         WINNING_COMBO.map((values) => {
@@ -43,6 +50,7 @@ export default function Home() {
 
     useEffect(() => {
         checkWinner();
+        checkDraw();
     }, [boardData]);
 
     const updateBoardData = (index) => {
@@ -68,15 +76,18 @@ export default function Home() {
         setXTurn(true);
         setWon(false);
         setWonCombo([]);
+        setIsDraw(false);
         setModalTitle('');
     };
 
     return (
         <>
-            <h1 className='text-center text-5xl m-10'>Tic Tac Toe</h1>
+            <h1 className='text-center text-5xl m-10 font-bold'>Tic Tac Toe</h1>
             <div className='flex flex-col align-middle mt-6 '>
                 <div className='text-center text-2xl font-semibold'>
-                    <p>{xTurn === true ? 'X Turn' : 'O Turn'}</p>
+                    <p className={`${xTurn === true ? 'text-violet-700' : 'text-orange-600'}`}>
+                        {xTurn === true ? 'X Turn' : 'O Turn'}
+                    </p>
                     {/* <p>{`Game Won:${won}`}</p> */}
                 </div>
                 <div className='grid grid-cols-3 gap-2 text-center pr-20 pb-20 pl-20 '>
@@ -84,14 +95,23 @@ export default function Home() {
                         return (
                             <div
                                 key={index}
-                                className={`bg-gray-500 rounded-lg p-5 text-center text-5xl leading-10 font-bold w-100 h-20 cursor-pointer shadow-md ${
-                                    wonCombo.includes(index) ? 'bg-green-300' : ''
-                                }`}
+                                className={` rounded-lg p-5 text-center text-5xl leading-10 font-bold w-100 h-20 cursor-pointer shadow-md ${
+                                    wonCombo.includes(index) ? 'bg-green-300' : 'bg-zinc-300'
+                                } `}
                                 onClick={() => {
                                     updateBoardData(index);
                                 }}
                             >
-                                {boardData[index]}
+                                <p
+                                    className={`${
+                                        boardData[index] === 'X'
+                                            ? 'text-violet-700'
+                                            : 'text-orange-600'
+                                    }  `}
+                                >
+                                    {' '}
+                                    {boardData[index]}
+                                </p>
                             </div>
                         );
                     })}
@@ -101,10 +121,16 @@ export default function Home() {
                         modalTitle ? 'show' : ''
                     }`}
                 >
-                    <div className='modal__title'>{modalTitle}</div>
+                    <div
+                        className={`modal__title ${
+                            modalTitle === 'Player X Won!!!' ? 'text-violet-700' : 'text-orange-600'
+                        }`}
+                    >
+                        {modalTitle}
+                    </div>
                     <button
                         onClick={reset}
-                        className='h-16 bg-gray-500 border-none font-bold shadow-lg'
+                        className='h-16 bg-gray-500 border-none font-bold shadow-lg hover:file:bg-violet-100 text-amber-50'
                     >
                         New Game
                     </button>
